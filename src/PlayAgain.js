@@ -1,8 +1,10 @@
 const PlayAgain=(props)=>{
 
-    const {onClick}=props;
+    const {onClick,gameStatus}=props;
     return(
         <div className="game-done">
+            {gameStatus==="won" ? "You win!" : "Try Again!"}
+            <br />
             <button onClick={onClick}>Play Again</button>
         </div>
     )

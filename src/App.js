@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 
 import { mathFunctions} from "./utils";
 import PlayNumber from './PlayNumber';
@@ -11,9 +11,10 @@ const App = () => {
   const [stars,setStars]=useState(mathFunctions.random(1,9));
   const [availableNums,setAvailableNums]=useState(mathFunctions.range(1,9));
   const [candidateNums,setCandidateNums]=useState([]);
+  const [secondsLeft,setSecondsLeft]=useState(10);
 
   const candidatesAreWrong=mathFunctions.sum(candidateNums)>stars;
-  const isGameDone=availableNums.length===0;
+  const gameStatus=availableNums.length===0 ? "won" : secondsLeft===0 ? "lost" : "active";
 
 
   const resetGame=()=>{
@@ -63,6 +64,24 @@ const App = () => {
     setStars(mathFunctions.randomSumIn(newAvaibleNums,9));
   }
 
+
+  useEffect(()=>{
+
+    if(secondsLeft<=0)
+    {
+       return;
+    }
+
+    const timeID=setTimeout(()=>{
+
+      setSecondsLeft(secondsLeft-1);
+
+    },1000);
+
+    return ()=>clearTimeout(timeID)
+
+  });
+
   return (
     <div className="game">
       <div className="help">
@@ -70,7 +89,11 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {isGameDone ? <PlayAgain onClick={resetGame}/> : <StarsDisplay count={stars}/>}
+          {gameStatus!=="active" ? 
+              <PlayAgain onClick={resetGame} gameStatus={gameStatus}/> 
+              : 
+              <StarsDisplay count={stars}/>
+          }
         </div>
         <div className="right">
           {mathFunctions.range(1,9).map(
@@ -84,7 +107,7 @@ const App = () => {
           )}
         </div>
       </div>
-      <div className="timer">Time Remaining: 10</div>
+      <div className="timer">Time Remaining: {secondsLeft}</div>
     </div>
   );
 };

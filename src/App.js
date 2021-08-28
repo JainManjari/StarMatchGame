@@ -27,6 +27,33 @@ const App = () => {
       return "available";
   }
 
+  const numberClick=(number,status)=>{
+
+    if(status==="used")
+    {
+       return;
+    }
+
+    const newCandidateNums= 
+            status==="available" 
+            ? 
+            candidateNums.concat(number) 
+            : 
+            candidateNums.filter(cn=>cn!==number);
+
+    if(mathFunctions.sum(newCandidateNums)!==stars)
+    {
+        setCandidateNums(newCandidateNums);
+        return;
+    }
+
+    const newAvaibleNums=availableNums.filter(n=>!newCandidateNums.includes(n));
+
+    setAvailableNums(newAvaibleNums);
+    setCandidateNums([]);
+    setStars(mathFunctions.randomSumIn(newAvaibleNums,9));
+  }
+
   return (
     <div className="game">
       <div className="help">
@@ -43,6 +70,7 @@ const App = () => {
                 key={number} 
                 number={number}
                 status={numberStatus(number)}
+                onClick={numberClick}
               />
           )}
         </div>

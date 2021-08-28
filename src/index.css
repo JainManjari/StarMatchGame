@@ -43,6 +43,7 @@
   height: 45px;
   margin: 10px;
   font-size: 25px;
+  cursor: pointer;
 }
 
 .number:focus, .number:active {

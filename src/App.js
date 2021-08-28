@@ -21,6 +21,7 @@ const App = () => {
     setStars(mathFunctions.random(1,9));
     setAvailableNums(mathFunctions.range(1,9));
     setCandidateNums([]);
+    setSecondsLeft(10);
   }
 
   const numberStatus=(number)=>{
@@ -39,7 +40,7 @@ const App = () => {
 
   const numberClick=(number,status)=>{
 
-    if(status==="used")
+    if(status==="used" || gameStatus!=="active")
     {
        return;
     }
@@ -67,7 +68,7 @@ const App = () => {
 
   useEffect(()=>{
 
-    if(secondsLeft<=0)
+    if(secondsLeft<=0 || availableNums.length===0)
     {
        return;
     }

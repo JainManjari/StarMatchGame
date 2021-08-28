@@ -3,6 +3,7 @@ import {useState} from 'react';
 import { mathFunctions} from "./utils";
 import PlayNumber from './PlayNumber';
 import StarsDisplay from './StarsDisplay';
+import PlayAgain from './PlayAgain';
 
 
 
@@ -12,6 +13,14 @@ const App = () => {
   const [candidateNums,setCandidateNums]=useState([]);
 
   const candidatesAreWrong=mathFunctions.sum(candidateNums)>stars;
+  const isGameDone=availableNums.length===0;
+
+
+  const resetGame=()=>{
+    setStars(mathFunctions.random(1,9));
+    setAvailableNums(mathFunctions.range(1,9));
+    setCandidateNums([]);
+  }
 
   const numberStatus=(number)=>{
       if(!availableNums.includes(number))
@@ -61,7 +70,7 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          <StarsDisplay count={stars}/>
+          {isGameDone ? <PlayAgain onClick={resetGame}/> : <StarsDisplay count={stars}/>}
         </div>
         <div className="right">
           {mathFunctions.range(1,9).map(
